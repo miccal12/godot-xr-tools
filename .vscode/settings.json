@@ -1,3 +1,13 @@
 {
-    "godotTools.editorPath.godot4": "c:\\Users\\micha\\Projects\\godot\\bin\\godot.windows.editor.x86_64.mono.exe"
+    "godotTools.editorPath.godot4": "c:\\Users\\micha\\Projects\\godot\\bin\\godot.windows.editor.x86_64.mono.exe",
+    "workbench.colorCustomizations": {
+        "sideBar.background": "#492b0e",
+        "activityBar.background": "#492b0e",
+        "titleBar.activeBackground": "#492b0e",
+        "titleBar.activeForeground": "#fa5e5e",
+        "icon.foreground": "#fa5e5e",
+        "symbolIcon.colorForeground": "#fa5e5e",
+        "icon.colorForeground": "#fa5e5e",
+        "activityBar.inactiveForeground": "#fa5e5e"        
+    },
 }

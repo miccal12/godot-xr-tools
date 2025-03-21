@@ -14,6 +14,8 @@ config/name="Godot XR Tools Demo"
 run/main_scene="res://demo_staging.tscn"
 config/features=PackedStringArray("4.4")
 config/icon="res://icon.png"
+interface/theme/base_color=Color(0.286, 0.169, 0.055, 1)
+interface/theme/accent_color=Color(0.98, 0.369, 0.369, 1)
 
 [autoload]
 
