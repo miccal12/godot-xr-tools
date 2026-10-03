@@ -2,31 +2,52 @@
 class_name XRToolsFade
 extends Node3D
 
-
 ## XR Tools Fade Script
 ##
 ## This script manages fading the view.
 
+@export_flags_3d_render var layers: int = 2:
+	set(value):
+		layers = value
+		if _mesh:
+			_mesh.layers = layers
+
 
 # Dictionary of fade requests
-var _faders : Dictionary = {}
+var _faders: Dictionary[Variant, Color] = {}
 
 # Fade update flag
-var _update : bool = false
+var _update: bool = false
 
 # Fade mesh
-var _mesh : MeshInstance3D
+var _mesh: MeshInstance3D
 
 # Fade shader material
-var _material : ShaderMaterial
+var _material: ShaderMaterial
 
 
-# Add support for is_xr_class on XRTools classes
-func is_xr_class(name : String) -> bool:
-	return name == "XRToolsFade"
+## Returns our first current fade node
+static func get_fade_node() -> XRToolsFade:
+	# In the future this use of groups should be replaced by static instances.
+	var tree := Engine.get_main_loop() as SceneTree
+	for node in tree.get_nodes_in_group("fade_mesh"):
+		var fade := node as XRToolsFade
+		if fade:
+			return fade
+
+	return null
 
 
-# Called when the fade node is ready
+## Set the fade level on the fade instance
+static func set_fade(p_whom: Variant, p_color: Color) -> void:
+	# In the future this use of groups should be replaced by static instances.
+	var tree := Engine.get_main_loop() as SceneTree
+	for node in tree.get_nodes_in_group("fade_mesh"):
+		var fade := node as XRToolsFade
+		if fade:
+			fade.set_fade_level(p_whom, p_color)
+
+
 func _ready() -> void:
 	# Add to the fade_mesh group - in the future this should be replaced with
 	# static instances.
@@ -34,11 +55,12 @@ func _ready() -> void:
 
 	# Get the mesh and material
 	_mesh = $FadeMesh
-	_material = _mesh.get_surface_override_material(0)
+	if _mesh:
+		_mesh.layers = layers
+		_material = _mesh.get_surface_override_material(0)
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta : float) -> void:
+func _process(_delta: float) -> void:
 	# Skip if nothing to update
 	if not _update:
 		return
@@ -46,6 +68,7 @@ func _process(_delta : float) -> void:
 	# Calculate the cumulative shade color
 	var fade := Color(1, 1, 1, 0)
 	var show := false
+
 	for whom in _faders:
 		var color := _faders[whom] as Color
 		fade = fade.blend(color)
@@ -57,8 +80,13 @@ func _process(_delta : float) -> void:
 	_update = false
 
 
-# Set the fade level
-func set_fade_level(p_whom : Variant, p_color : Color) -> void:
+## Add support for is_xr_class on XRTools classes
+func is_xr_class(xr_name: String) -> bool:
+	return xr_name == "XRToolsFade"
+
+
+## Set the fade level
+func set_fade_level(p_whom: Variant, p_color: Color) -> void:
 	# Test if fading is needed
 	if p_color.a > 0:
 		# Set the fade level
@@ -67,13 +95,3 @@ func set_fade_level(p_whom : Variant, p_color : Color) -> void:
 	elif _faders.erase(p_whom):
 		# Fade erased
 		_update = true
-
-
-## Set the fade level on the fade instance
-static func set_fade(p_whom : Variant, p_color : Color) -> void:
-	# In the future this use of groups should be replaced by static instances.
-	var tree := Engine.get_main_loop() as SceneTree
-	for node in tree.get_nodes_in_group("fade_mesh"):
-		var fade := node as XRToolsFade
-		if fade:
-			fade.set_fade_level(p_whom, p_color)

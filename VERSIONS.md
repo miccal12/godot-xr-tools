@@ -1,4 +1,26 @@
-# 4.4.1
+# 4.6.0
+- Fix dependency on staging system
+- Fix return value issues when XR Tools is used in Godot 4.7
+- Various style change and related cleanup changes to ensure more up to date GDScript syntax is used.
+
+# 4.5.0
+- Minimum Godot version changed to 4.4
+- Added UIDs for all classes
+- Improve material handling in Viewport2Din3D
+- Improve performance by avoiding force_update_transform on grab driver
+- Don't trigger haptics when primary interface is null
+- Fix 'create_snap' desync
+- Fix grab with scaled pickables by swapping inverse for affine_inverse
+- Fix "UP" direction in player movement
+- Gracefully handle freed objects with collision exceptions
+- Added support for using grip or palm pose instead of aim pose
+- Various bits of code cleanup
+- Improved player body collisions so players can move over tables
+- Fix: Stash sound should not play on scene load (minor breaking)
+- Fixed node process mode issue for XRToolsInteractableAreaButton
+- Renamed controler to controller in various classes (minor breaking)
+- Demo now has an optional spectator view for PCVR
+- Fixed issue with setting the ranged collision mask
 
 # 4.4.0
 - Minimum Godot version changed to 4.2
